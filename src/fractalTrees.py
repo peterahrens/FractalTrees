@@ -1,3 +1,13 @@
+################################################################################
+#                                                                              # 
+# Trees                                                                        # 
+#                                                                              # 
+# Author = Peter Ahrens                                                        #
+# Version = 1.0                                                                #
+# Date = October 24, 2012                                                      #
+#                                                                              # 
+################################################################################
+
 import tkinter as tk
 from tkinter import filedialog
 from math import *
@@ -187,6 +197,18 @@ class Trunk(object):
             self.set_tip(self.tip_x, self.tip_y)
             self.set_root(self.root_x, self.root_y)
 
+    def erase_all_redraw(self):
+        self.canvas.delete(tk.ALL)
+        self.offspring = []
+        self.canvas_branches = []
+        self.canvas_points = []
+        self.canvas_tip = None
+        self.canvas_root = None
+        for point in self.points:
+            self.draw_point(point)
+        self.editing = False
+            
+
 class treedrawer(object):
     DEFAULT_WIDTH = 500
     DEFAULT_HEIGHT = 500
@@ -258,15 +280,15 @@ class treedrawer(object):
         if self.pen.get() != "Grow":
             self.pen.set("Grow")
             self.trunk.hide_edit_marks()
-        self.trunk.erase_offspring()
+        self.trunk.erase_all_redraw()
         self.trunk.grow(self.s2.get())
 
     def setup_edit(self):
-        self.trunk.erase_offspring()
+        self.trunk.erase_all_redraw()
         self.trunk.show_edit_marks()
 
     def setup_grow(self):
-        self.trunk.erase_offspring()
+        self.trunk.erase_all_redraw()
         self.trunk.hide_edit_marks()
 
     def reset(self):
@@ -369,7 +391,7 @@ class treedrawer(object):
                 self.branch_mark_y = None
 
 root = tk.Tk()
-root.wm_title("FractalTrees")
+root.wm_title("Trees")
 tree = treedrawer(root)
 root.mainloop()
 
